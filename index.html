@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vernier Inventory</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">IB ESS • Laboratory Equipment</div>
+    <h1>Vernier Inventory</h1>
+    <p>Explore the sensors, probes, meters, and equipment available in the laboratory.</p>
+  </div>
+</header>
+
+<main class="container">
+  <section class="toolbar">
+    <div class="search-wrap">
+      <span>⌕</span>
+      <input id="search" type="search" placeholder="Search equipment, keyword, or category...">
+    </div>
+    <select id="category">
+      <option value="all">All categories</option>
+    </select>
+  </section>
+
+  <section class="summary">
+    <div><strong id="typeCount">0</strong><span>Equipment types</span></div>
+    <div><strong id="unitCount">0</strong><span>Total units</span></div>
+    <div><strong id="visibleCount">0</strong><span>Showing</span></div>
+  </section>
+
+  <section id="grid" class="grid"></section>
+  <p id="empty" class="empty hidden">No equipment matches your search.</p>
+</main>
+
+<div id="modal" class="modal hidden" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+  <article class="modal-card">
+    <button class="close" data-close aria-label="Close">×</button>
+    <div id="modalContent"></div>
+  </article>
+</div>
+
+<footer>Vernier Inventory • IB ESS Laboratory</footer>
+<script src="script.js"></script>
+</body>
+</html>
