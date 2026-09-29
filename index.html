@@ -1,12 +1,18 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>Vernier Inventory</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -15,92 +21,95 @@ body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: #f4f6f7;
-    color: #1f2933;
+    color: #263238;
 }
-
-/* HEADER */
 
 header {
     background: #173f46;
     color: white;
-    padding: 45px 30px;
+    padding: 55px 25px;
     text-align: center;
 }
 
 header h1 {
     margin: 0;
-    font-size: 42px;
+    font-size: 46px;
     letter-spacing: 1px;
 }
 
 header p {
-    margin-top: 10px;
+    margin-top: 12px;
     font-size: 17px;
-    opacity: 0.9;
+    opacity: .9;
 }
-
-/* SEARCH */
 
 .controls {
     max-width: 1200px;
-    margin: 30px auto;
+    margin: 30px auto 25px;
     padding: 0 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
 }
 
-#search {
+#search,
+select {
     width: 100%;
-    padding: 15px 18px;
-    border: 1px solid #d5dadd;
+    padding: 15px 16px;
     border-radius: 10px;
-    font-size: 16px;
-    outline: none;
+    border: 1px solid #d5dcdf;
     background: white;
+    font-size: 15px;
+    color: #263238;
+    outline: none;
 }
 
-#search:focus {
+#search:focus,
+select:focus {
     border-color: #177e89;
 }
 
-/* GRID */
+.results {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 0 20px;
+    color: #68757b;
+    font-size: 14px;
+}
 
 .inventory {
     max-width: 1200px;
     margin: auto;
-    padding: 0 20px 50px;
-
+    padding: 0 20px 60px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
 }
 
-/* CARD */
-
 .card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    border: 1px solid #e0e5e7;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #e1e6e8;
+    box-shadow: 0 4px 15px rgba(0,0,0,.07);
+    transition: transform .2s, box-shadow .2s;
 }
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    box-shadow: 0 10px 28px rgba(0,0,0,.12);
 }
 
 .card-header {
     background: #173f46;
     color: white;
-    padding: 16px 20px;
+    padding: 17px 20px;
 }
 
 .card-header h2 {
     margin: 0;
     font-size: 21px;
 }
-
-/* IMAGE + INFO */
 
 .card-content {
     display: flex;
@@ -109,17 +118,15 @@ header p {
 }
 
 .device-image {
-    width: 180px;
-    height: 180px;
+    width: 190px;
+    height: 190px;
     flex-shrink: 0;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     background: #fafafa;
-    border: 1px solid #e2e6e8;
+    border: 1px solid #e1e6e8;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
 }
 
@@ -127,13 +134,7 @@ header p {
     width: 100%;
     height: 100%;
     object-fit: contain;
-}
-
-.no-image {
-    text-align: center;
-    color: #89949a;
-    font-size: 13px;
-    padding: 15px;
+    padding: 8px;
 }
 
 .info {
@@ -143,14 +144,14 @@ header p {
 .info p {
     margin: 7px 0;
     font-size: 14px;
-    line-height: 1.45;
+    line-height: 1.5;
 }
 
 .stock {
     display: inline-block;
     background: #e5f4eb;
     color: #287344;
-    padding: 5px 9px;
+    padding: 6px 10px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: bold;
@@ -158,23 +159,19 @@ header p {
 }
 
 .description {
-    color: #5d6970;
-    margin-top: 12px !important;
+    color: #65727a;
+    margin-top: 14px !important;
 }
-
-/* LINKS */
 
 .links {
     border-top: 1px solid #e5e8ea;
-    padding: 15px 20px;
-
+    padding: 14px 20px;
     display: flex;
-    gap: 10px;
+    gap: 9px;
     flex-wrap: wrap;
 }
 
-.links a,
-.details-button {
+.links a {
     text-decoration: none;
     border: 1px solid #d6dcdf;
     background: white;
@@ -183,97 +180,36 @@ header p {
     border-radius: 7px;
     font-size: 13px;
     font-weight: bold;
-    cursor: pointer;
 }
 
-.links a:hover,
-.details-button:hover {
+.links a:hover {
     background: #173f46;
     color: white;
 }
 
-.details-button {
-    background: #173f46;
-    color: white;
-}
-
-/* MODAL */
-
-.modal {
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #7a858a;
     display: none;
-    position: fixed;
-    z-index: 1000;
-    inset: 0;
-
-    background: rgba(0,0,0,0.65);
-
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px;
 }
 
-.modal-box {
-    background: white;
-    width: 700px;
-    max-width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-
-    border-radius: 15px;
-    padding: 30px;
-
-    position: relative;
-}
-
-.close {
-    position: absolute;
-    right: 20px;
-    top: 15px;
-
-    border: none;
-    background: none;
-
-    font-size: 28px;
-    cursor: pointer;
-    color: #555;
-}
-
-.modal-box h2 {
-    color: #173f46;
-    margin-top: 0;
-}
-
-.modal-image {
-    width: 100%;
-    height: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #fafafa;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.modal-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-/* RESPONSIVE */
-
-@media (max-width: 850px) {
+@media(max-width:850px) {
 
     .inventory {
         grid-template-columns: 1fr;
     }
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
 }
 
-@media (max-width: 550px) {
+@media(max-width:550px) {
 
     header h1 {
-        font-size: 32px;
+        font-size: 34px;
     }
 
     .card-content {
@@ -282,12 +218,13 @@ header p {
 
     .device-image {
         width: 100%;
-        height: 220px;
+        height: 230px;
     }
 }
-</style>
-</head>
 
+</style>
+
+</head>
 
 <body>
 
@@ -295,9 +232,7 @@ header p {
 
     <h1>Vernier Inventory</h1>
 
-    <p>
-        IB ESS Laboratory Equipment
-    </p>
+    <p>IB ESS Laboratory Equipment</p>
 
 </header>
 
@@ -308,18 +243,422 @@ header p {
         type="text"
         id="search"
         placeholder="Search equipment..."
-        onkeyup="searchEquipment()"
     >
+
+    <select id="categoryFilter">
+
+        <option value="all">All Categories</option>
+
+        <option value="IB ESS">IB ESS</option>
+
+    </select>
+
+    <select id="subcategoryFilter">
+
+        <option value="all">All Subcategories</option>
+
+        <option value="Atmospheric Sensors">
+            Atmospheric Sensors
+        </option>
+
+        <option value="Environmental Chambers">
+            Environmental Chambers
+        </option>
+
+        <option value="Gas Sensors">
+            Gas Sensors
+        </option>
+
+        <option value="Light & Physics">
+            Light & Physics
+        </option>
+
+        <option value="Soil">
+            Soil
+        </option>
+
+        <option value="Temperature">
+            Temperature
+        </option>
+
+        <option value="Water Quality">
+            Water Quality
+        </option>
+
+        <option value="Water Quality Accessories">
+            Water Quality Accessories
+        </option>
+
+    </select>
 
 </div>
 
 
-<div class="inventory" id="inventory">
+<div class="results">
+
+    <span id="resultCount">
+        Showing 15 of 15 equipment
+    </span>
+
+</div>
+
+
+<div class="inventory">
+
+
+<!-- ANEMOMETER -->
+
+<div class="card"
+     data-name="Anemometer"
+     data-category="IB ESS"
+     data-subcategory="Atmospheric Sensors">
+
+    <div class="card-header">
+        <h2>Anemometer</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 1
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Atmospheric Sensors
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures wind speed for atmospheric
+                and environmental investigations.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/anemometer/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/anm-bta/"
+           target="_blank">
+            Manual
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=XoqcoRvkU5g"
+           target="_blank">
+            Video
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- BAROMETER -->
+
+<div class="card"
+     data-name="Barometer"
+     data-category="IB ESS"
+     data-subcategory="Atmospheric Sensors">
+
+    <div class="card-header">
+        <h2>Barometer</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 1
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Atmospheric Sensors
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures atmospheric pressure for
+                weather and environmental studies.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/barometer/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/bar-bta/"
+           target="_blank">
+            Manual
+        </a>
+
+        <a href="https://www.vernier.com/experiment/esv-p4_barometric-pressure/"
+           target="_blank">
+            Video
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- BIOCHAMBER -->
+
+<div class="card"
+     data-name="BioChamber 250"
+     data-category="IB ESS"
+     data-subcategory="Environmental Chambers">
+
+    <div class="card-header">
+        <h2>BioChamber 250</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 6
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Environmental Chambers
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                250 mL chamber used with CO₂ and O₂
+                sensors for closed-system biological
+                investigations.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/biochamber-250/"
+           target="_blank">
+            Description
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- CO2 -->
+
+<div class="card"
+     data-name="CO2 Gas Sensor"
+     data-category="IB ESS"
+     data-subcategory="Gas Sensors">
+
+    <div class="card-header">
+        <h2>CO₂ Gas Sensor</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 6
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Gas Sensors
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures gaseous carbon dioxide
+                concentration for respiration and
+                photosynthesis investigations.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/co2-gas-sensor/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/co2-bta/"
+           target="_blank">
+            Manual
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=pmsxa0-cKYU"
+           target="_blank">
+            Video
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- DISSOLVED OXYGEN -->
+
+<div class="card"
+     data-name="Dissolved Oxygen Probe"
+     data-category="IB ESS"
+     data-subcategory="Water Quality">
+
+    <div class="card-header">
+        <h2>Dissolved Oxygen Probe</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 2
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Water Quality
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures dissolved oxygen
+                concentration in water.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/dissolved-oxygen-probe/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/do-bta/"
+           target="_blank">
+            Manual
+        </a>
+
+        <a href="https://www.youtube.com/watch?v=wjTiRAHEHLc"
+           target="_blank">
+            Video
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- FLOW RATE -->
+
+<div class="card"
+     data-name="Flow Rate Meter"
+     data-category="IB ESS"
+     data-subcategory="Water Quality">
+
+    <div class="card-header">
+        <h2>Flow Rate Meter</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 2
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Water Quality
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures the velocity of water for
+                stream discharge, flow patterns,
+                and sediment transport investigations.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/flow-rate-sensor/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/flo-bta/"
+           target="_blank">
+            Manual
+        </a>
+
+        <a href="https://youtu.be/ORaVR9ZKKUI"
+           target="_blank">
+            Video
+        </a>
+
+    </div>
+
+</div>
 
 
 <!-- LIGHT SENSOR -->
 
-<div class="card" data-name="Light Sensor">
+<div class="card"
+     data-name="Light Sensor"
+     data-category="IB ESS"
+     data-subcategory="Light & Physics">
 
     <div class="card-header">
         <h2>Light Sensor</h2>
@@ -332,29 +671,29 @@ header p {
             <img
                 src="https://www.vernier.com/wp-content/uploads/2020/08/LS-BTA.jpg"
                 alt="Vernier Light Sensor"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                onerror="this.parentElement.style.display='none';"
             >
 
-            <div class="no-image" style="display:none;">
-                Image unavailable
-            </div>
-
         </div>
 
         <div class="info">
 
-            <span class="stock">In Stock: 5</span>
+            <span class="stock">
+                In Stock: 5
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> IB Physics</p>
+            <p>
+                <b>Subcategory:</b>
+                Light & Physics
+            </p>
 
-            <p><b>Keyword:</b> Light / Light Intensity</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures light intensity for environmental and physics investigations.
+                Measures light intensity for
+                environmental and physics investigations.
             </p>
 
         </div>
@@ -363,220 +702,32 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/light-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/light-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/ls-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/ls-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://www.vernier.com/video/light-sensor-tech-tips/" target="_blank">
+        <a href="https://www.vernier.com/video/light-sensor-tech-tips/"
+           target="_blank">
             Video
         </a>
-
-        <button class="details-button" onclick="openModal('light')">
-            View Details
-        </button>
 
     </div>
 
 </div>
-
-
-
-<!-- FLOW RATE -->
-
-<div class="card" data-name="Flow Rate Meter">
-
-    <div class="card-header">
-        <h2>Flow Rate Meter</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Flow Rate Sensor
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 2</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Water Quality</p>
-
-            <p><b>Keyword:</b> Flow Rate / Stream</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Measures water flow velocity for aquatic and environmental investigations.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <a href="https://www.vernier.com/product/flow-rate-sensor/" target="_blank">
-            Product
-        </a>
-
-        <a href="https://www.vernier.com/manuals/flo-bta/" target="_blank">
-            Manual
-        </a>
-
-        <a href="https://youtu.be/ORaVR9ZKKUI" target="_blank">
-            Video
-        </a>
-
-        <button class="details-button" onclick="openModal('flow')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- OPTICAL DO -->
-
-<div class="card" data-name="Optical DO Probe">
-
-    <div class="card-header">
-        <h2>Vernier Optical DO Probe</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Optical DO Probe
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 2</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Water Quality</p>
-
-            <p><b>Keyword:</b> Dissolved Oxygen / DO</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Optical probe for measuring dissolved oxygen in aquatic investigations.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <a href="https://www.vernier.com/product/vernier-optical-do-probe/" target="_blank">
-            Product
-        </a>
-
-        <a href="https://www.vernier.com/manuals/odo-bta/" target="_blank">
-            Manual
-        </a>
-
-        <a href="https://www.youtube.com/watch?v=zHHRmqWuTDo" target="_blank">
-            Video
-        </a>
-
-        <button class="details-button" onclick="openModal('optical')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- DISSOLVED OXYGEN -->
-
-<div class="card" data-name="Dissolved Oxygen Probe">
-
-    <div class="card-header">
-        <h2>Dissolved Oxygen Probe</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Dissolved Oxygen Probe
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 2</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Water Quality</p>
-
-            <p><b>Keyword:</b> Dissolved Oxygen</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Measures dissolved oxygen concentration in water.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <a href="https://www.vernier.com/product/dissolved-oxygen-probe/" target="_blank">
-            Product
-        </a>
-
-        <a href="https://www.vernier.com/manuals/do-bta/" target="_blank">
-            Manual
-        </a>
-
-        <a href="https://www.youtube.com/watch?v=wjTiRAHEHLc" target="_blank">
-            Video
-        </a>
-
-        <button class="details-button" onclick="openModal('do')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
 
 
 <!-- O2 -->
 
-<div class="card" data-name="O2 Sensor">
+<div class="card"
+     data-name="O2 Gas Sensor"
+     data-category="IB ESS"
+     data-subcategory="Gas Sensors">
 
     <div class="card-header">
         <h2>O₂ Gas Sensor</h2>
@@ -584,29 +735,25 @@ header p {
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                O₂ Gas Sensor
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 6</span>
+            <span class="stock">
+                In Stock: 6
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Gas Sensors</p>
+            <p>
+                <b>Subcategory:</b>
+                Gas Sensors
+            </p>
 
-            <p><b>Keyword:</b> Oxygen / O₂</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures oxygen gas concentration for respiration and photosynthesis investigations.
+                Measures gaseous oxygen concentration
+                for respiration, photosynthesis,
+                and environmental investigations.
             </p>
 
         </div>
@@ -615,61 +762,57 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/o2-gas-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/o2-gas-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/o2-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/o2-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://youtu.be/bhusKmCNbiY" target="_blank">
+        <a href="https://youtu.be/bhusKmCNbiY"
+           target="_blank">
             Video
         </a>
 
-        <button class="details-button" onclick="openModal('o2')">
-            View Details
-        </button>
-
     </div>
 
 </div>
 
 
+<!-- OPTICAL DO REPLACEMENT CAP -->
 
-<!-- CO2 -->
-
-<div class="card" data-name="CO2 Gas Sensor">
+<div class="card"
+     data-name="Optical DO Probe Replacement Cap"
+     data-category="IB ESS"
+     data-subcategory="Water Quality Accessories">
 
     <div class="card-header">
-        <h2>CO₂ Gas Sensor</h2>
+        <h2>Optical DO Probe Replacement Cap</h2>
     </div>
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                CO₂ Gas Sensor
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 6</span>
+            <span class="stock">
+                In Stock: 1
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Gas Sensors</p>
+            <p>
+                <b>Subcategory:</b>
+                Water Quality Accessories
+            </p>
 
-            <p><b>Keyword:</b> Carbon Dioxide / CO₂</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures carbon dioxide concentration for environmental investigations.
+                Replacement cap for the Optical
+                Dissolved Oxygen Probe.
             </p>
 
         </div>
@@ -678,204 +821,27 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/co2-gas-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/vernier-optical-do-probe/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/co2-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/odo-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://www.youtube.com/watch?v=pmsxa0-cKYU" target="_blank">
-            Video
-        </a>
-
-        <button class="details-button" onclick="openModal('co2')">
-            View Details
-        </button>
-
     </div>
 
 </div>
 
 
-
-<!-- TURBIDITY -->
-
-<div class="card" data-name="Turbidity Meter">
-
-    <div class="card-header">
-        <h2>Turbidity Meter</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Turbidity Sensor
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 2</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Water Quality</p>
-
-            <p><b>Keyword:</b> Turbidity / Water Clarity</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Measures turbidity and water clarity.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <a href="https://www.vernier.com/product/turbidity-sensor/" target="_blank">
-            Product
-        </a>
-
-        <a href="https://www.vernier.com/manuals/trb-bta/" target="_blank">
-            Manual
-        </a>
-
-        <a href="https://www.youtube.com/watch?v=Hi8OVqA--m8" target="_blank">
-            Video
-        </a>
-
-        <button class="details-button" onclick="openModal('turbidity')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- BIOCHAMBER -->
-
-<div class="card" data-name="BioChamber 250">
-
-    <div class="card-header">
-        <h2>BioChamber 250</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                BioChamber 250
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 6</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Environmental Chambers</p>
-
-            <p><b>Keyword:</b> BioChamber</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Chamber designed for controlled biological and environmental investigations.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <a href="https://www.vernier.com/product/biochamber-250/" target="_blank">
-            Product
-        </a>
-
-        <a href="https://www.vernier.com/search/?q=BioChamber+250" target="_blank">
-            Manual
-        </a>
-
-        <button class="details-button" onclick="openModal('bio')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- SALINITY -->
-
-<div class="card" data-name="Salinity Sensor">
-
-    <div class="card-header">
-        <h2>Salinity Sensor</h2>
-    </div>
-
-    <div class="card-content">
-
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Salinity Sensor
-            </div>
-
-        </div>
-
-        <div class="info">
-
-            <span class="stock">In Stock: 2</span>
-
-            <p><b>Category:</b> IB ESS</p>
-
-            <p><b>Subcategory:</b> Water Quality</p>
-
-            <p><b>Keyword:</b> Salinity</p>
-
-            <p><b>Location:</b> TBD</p>
-
-            <p class="description">
-                Measures salinity for aquatic and environmental investigations.
-            </p>
-
-        </div>
-
-    </div>
-
-    <div class="links">
-
-        <button class="details-button" onclick="openModal('salinity')">
-            View Details
-        </button>
-
-    </div>
-
-</div>
-
-
-
-<!-- HUMIDITY -->
-
-<div class="card" data-name="Relative Humidity Sensor">
+<!-- RELATIVE HUMIDITY -->
+
+<div class="card"
+     data-name="Relative Humidity Sensor"
+     data-category="IB ESS"
+     data-subcategory="Atmospheric Sensors">
 
     <div class="card-header">
         <h2>Relative Humidity Sensor</h2>
@@ -883,29 +849,25 @@ header p {
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Humidity Sensor
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 4</span>
+            <span class="stock">
+                In Stock: 4
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Atmospheric Sensors</p>
+            <p>
+                <b>Subcategory:</b>
+                Atmospheric Sensors
+            </p>
 
-            <p><b>Keyword:</b> Relative Humidity</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures relative humidity in environmental investigations.
+                Measures relative humidity for
+                weather, greenhouse, and environmental
+                investigations.
             </p>
 
         </div>
@@ -914,27 +876,81 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/relative-humidity-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/relative-humidity-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/rh-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/rh-bta/"
+           target="_blank">
             Manual
         </a>
-
-        <button class="details-button" onclick="openModal('humidity')">
-            View Details
-        </button>
 
     </div>
 
 </div>
 
 
+<!-- SALINITY -->
 
-<!-- SOIL -->
+<div class="card"
+     data-name="Salinity Sensor"
+     data-category="IB ESS"
+     data-subcategory="Water Quality">
 
-<div class="card" data-name="Soil Moisture Sensor">
+    <div class="card-header">
+        <h2>Salinity Sensor</h2>
+    </div>
+
+    <div class="card-content">
+
+        <div class="info">
+
+            <span class="stock">
+                In Stock: 2
+            </span>
+
+            <p><b>Category:</b> IB ESS</p>
+
+            <p>
+                <b>Subcategory:</b>
+                Water Quality
+            </p>
+
+            <p><b>Location:</b> HS305</p>
+
+            <p class="description">
+                Measures dissolved salt content in
+                freshwater, brackish water, and seawater.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="links">
+
+        <a href="https://www.vernier.com/product/salinity-sensor/"
+           target="_blank">
+            Description
+        </a>
+
+        <a href="https://www.vernier.com/manuals/SAL-BTA"
+           target="_blank">
+            Manual
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- SOIL MOISTURE -->
+
+<div class="card"
+     data-name="Soil Moisture Sensor"
+     data-category="IB ESS"
+     data-subcategory="Soil">
 
     <div class="card-header">
         <h2>Soil Moisture Sensor</h2>
@@ -942,29 +958,24 @@ header p {
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Soil Moisture Sensor
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 7</span>
+            <span class="stock">
+                In Stock: 7
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Soil / Environmental</p>
+            <p>
+                <b>Subcategory:</b>
+                Soil
+            </p>
 
-            <p><b>Keyword:</b> Soil Moisture</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures soil moisture for soil and plant investigations.
+                Measures volumetric water content
+                in soil.
             </p>
 
         </div>
@@ -973,31 +984,32 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/soil-moisture-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/soil-moisture-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/product/soil-moisture-sensor/" target="_blank">
+        <a href="https://www.vernier.com/manuals/sms-bta"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://youtu.be/CBdlP1IMxLw" target="_blank">
+        <a href="https://youtu.be/CBdlP1IMxLw"
+           target="_blank">
             Video
         </a>
-
-        <button class="details-button" onclick="openModal('soil')">
-            View Details
-        </button>
 
     </div>
 
 </div>
 
 
-
 <!-- SURFACE TEMPERATURE -->
 
-<div class="card" data-name="Surface Temperature Probe">
+<div class="card"
+     data-name="Surface Temperature Probe"
+     data-category="IB ESS"
+     data-subcategory="Temperature">
 
     <div class="card-header">
         <h2>Surface Temperature Probe</h2>
@@ -1005,29 +1017,24 @@ header p {
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Surface Temperature Probe
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 3</span>
+            <span class="stock">
+                In Stock: 3
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Temperature</p>
+            <p>
+                <b>Subcategory:</b>
+                Temperature
+            </p>
 
-            <p><b>Keyword:</b> Surface Temperature</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures surface temperature for environmental investigations.
+                Measures surface temperature in
+                environmental and physical investigations.
             </p>
 
         </div>
@@ -1036,61 +1043,57 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/surface-temperature-sensor/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/surface-temperature-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/sts-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/sts-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://www.youtube.com/watch?v=emGOPcyFY6k" target="_blank">
+        <a href="https://www.youtube.com/watch?v=emGOPcyFY6k"
+           target="_blank">
             Video
         </a>
-
-        <button class="details-button" onclick="openModal('temperature')">
-            View Details
-        </button>
 
     </div>
 
 </div>
 
 
+<!-- TURBIDITY -->
 
-<!-- BAROMETER -->
-
-<div class="card" data-name="Barometer">
+<div class="card"
+     data-name="Turbidity Meter"
+     data-category="IB ESS"
+     data-subcategory="Water Quality">
 
     <div class="card-header">
-        <h2>Barometer</h2>
+        <h2>Turbidity Meter</h2>
     </div>
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Barometer
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 1</span>
+            <span class="stock">
+                In Stock: 2
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Atmospheric Sensors</p>
+            <p>
+                <b>Subcategory:</b>
+                Water Quality
+            </p>
 
-            <p><b>Keyword:</b> Barometric Pressure</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures atmospheric pressure for weather and environmental studies.
+                Measures turbidity of freshwater
+                or seawater samples.
             </p>
 
         </div>
@@ -1099,61 +1102,57 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/barometer/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/turbidity-sensor/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/bar-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/trb-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://www.vernier.com/experiment/esv-p4_barometric-pressure/" target="_blank">
+        <a href="https://www.youtube.com/watch?v=Hi8OVqA--m8"
+           target="_blank">
             Video
         </a>
-
-        <button class="details-button" onclick="openModal('barometer')">
-            View Details
-        </button>
 
     </div>
 
 </div>
 
 
+<!-- VERNIER OPTICAL DO -->
 
-<!-- ANEMOMETER -->
-
-<div class="card" data-name="Anemometer">
+<div class="card"
+     data-name="Vernier Optical DO Probe"
+     data-category="IB ESS"
+     data-subcategory="Water Quality">
 
     <div class="card-header">
-        <h2>Anemometer</h2>
+        <h2>Vernier Optical DO Probe</h2>
     </div>
 
     <div class="card-content">
 
-        <div class="device-image">
-
-            <div class="no-image">
-                Vernier<br>
-                Anemometer
-            </div>
-
-        </div>
-
         <div class="info">
 
-            <span class="stock">In Stock: 1</span>
+            <span class="stock">
+                In Stock: 2
+            </span>
 
             <p><b>Category:</b> IB ESS</p>
 
-            <p><b>Subcategory:</b> Atmospheric Sensors</p>
+            <p>
+                <b>Subcategory:</b>
+                Water Quality
+            </p>
 
-            <p><b>Keyword:</b> Wind Speed</p>
-
-            <p><b>Location:</b> TBD</p>
+            <p><b>Location:</b> HS305</p>
 
             <p class="description">
-                Measures wind speed for atmospheric and environmental investigations.
+                Optical probe for measuring dissolved
+                oxygen in aquatic environments.
             </p>
 
         </div>
@@ -1162,65 +1161,99 @@ header p {
 
     <div class="links">
 
-        <a href="https://www.vernier.com/product/anemometer/" target="_blank">
-            Product
+        <a href="https://www.vernier.com/product/vernier-optical-do-probe/"
+           target="_blank">
+            Description
         </a>
 
-        <a href="https://www.vernier.com/manuals/anm-bta/" target="_blank">
+        <a href="https://www.vernier.com/manuals/odo-bta/"
+           target="_blank">
             Manual
         </a>
 
-        <a href="https://www.youtube.com/watch?v=XoqcoRvkU5g" target="_blank">
+        <a href="https://www.youtube.com/watch?v=zHHRmqWuTDo"
+           target="_blank">
             Video
         </a>
 
-        <button class="details-button" onclick="openModal('anemometer')">
-            View Details
-        </button>
-
     </div>
 
 </div>
 
 
+<div class="no-results" id="noResults">
+    No equipment found.
 </div>
-
-
-<!-- MODAL -->
-
-<div class="modal" id="modal">
-
-    <div class="modal-box">
-
-        <button class="close" onclick="closeModal()">×</button>
-
-        <div id="modalContent"></div>
-
-    </div>
 
 </div>
 
 
 <script>
 
-function searchEquipment() {
+const searchInput =
+    document.getElementById("search");
+
+const categoryFilter =
+    document.getElementById("categoryFilter");
+
+const subcategoryFilter =
+    document.getElementById("subcategoryFilter");
+
+const cards =
+    document.querySelectorAll(".card");
+
+const resultCount =
+    document.getElementById("resultCount");
+
+const noResults =
+    document.getElementById("noResults");
+
+
+function filterEquipment() {
 
     const search =
-        document.getElementById("search")
-        .value
-        .toLowerCase();
+        searchInput.value
+        .toLowerCase()
+        .trim();
 
-    const cards =
-        document.querySelectorAll(".card");
+    const category =
+        categoryFilter.value;
+
+    const subcategory =
+        subcategoryFilter.value;
+
+    let visible = 0;
 
     cards.forEach(card => {
 
         const name =
             card.dataset.name.toLowerCase();
 
-        if (name.includes(search)) {
+        const cardCategory =
+            card.dataset.category;
+
+        const cardSubcategory =
+            card.dataset.subcategory;
+
+        const matchesSearch =
+            name.includes(search);
+
+        const matchesCategory =
+            category === "all" ||
+            cardCategory === category;
+
+        const matchesSubcategory =
+            subcategory === "all" ||
+            cardSubcategory === subcategory;
+
+        if (
+            matchesSearch &&
+            matchesCategory &&
+            matchesSubcategory
+        ) {
 
             card.style.display = "";
+            visible++;
 
         } else {
 
@@ -1230,147 +1263,32 @@ function searchEquipment() {
 
     });
 
-}
+    resultCount.textContent =
+        `Showing ${visible} of ${cards.length} equipment`;
 
-
-const details = {
-
-    light: {
-        title: "Light Sensor",
-        description:
-        "The Vernier Light Sensor measures light intensity and can be used for investigations involving environmental conditions, light levels, and physics."
-    },
-
-    flow: {
-        title: "Flow Rate Meter",
-        description:
-        "The Flow Rate Sensor is designed for measuring the velocity of water in aquatic and environmental investigations."
-    },
-
-    optical: {
-        title: "Vernier Optical DO Probe",
-        description:
-        "An optical dissolved oxygen probe for aquatic investigations and water-quality studies."
-    },
-
-    do: {
-        title: "Dissolved Oxygen Probe",
-        description:
-        "Measures dissolved oxygen concentration in water and can be used for investigations of aquatic ecosystems and water quality."
-    },
-
-    o2: {
-        title: "O₂ Gas Sensor",
-        description:
-        "Measures oxygen gas concentration and can be used for investigations involving respiration and photosynthesis."
-    },
-
-    co2: {
-        title: "CO₂ Gas Sensor",
-        description:
-        "Measures carbon dioxide concentration for environmental, respiration, and photosynthesis investigations."
-    },
-
-    turbidity: {
-        title: "Turbidity Meter",
-        description:
-        "Measures turbidity, providing information about water clarity and suspended particles."
-    },
-
-    bio: {
-        title: "BioChamber 250",
-        description:
-        "A chamber designed for controlled biological and environmental investigations."
-    },
-
-    salinity: {
-        title: "Salinity Sensor",
-        description:
-        "Measures salinity for aquatic and environmental investigations."
-    },
-
-    humidity: {
-        title: "Relative Humidity Sensor",
-        description:
-        "Measures relative humidity for atmospheric and environmental investigations."
-    },
-
-    soil: {
-        title: "Soil Moisture Sensor",
-        description:
-        "Measures soil moisture for investigations involving soil conditions, water availability, and plant growth."
-    },
-
-    temperature: {
-        title: "Surface Temperature Probe",
-        description:
-        "Measures the temperature of surfaces for environmental and physical investigations."
-    },
-
-    barometer: {
-        title: "Barometer",
-        description:
-        "Measures atmospheric pressure and can be used in weather and environmental investigations."
-    },
-
-    anemometer: {
-        title: "Anemometer",
-        description:
-        "Measures wind speed for atmospheric and environmental investigations."
-    }
-
-};
-
-
-function openModal(id) {
-
-    const item = details[id];
-
-    document.getElementById("modalContent").innerHTML = `
-
-        <h2>${item.title}</h2>
-
-        <p>
-            ${item.description}
-        </p>
-
-        <p>
-            <b>Category:</b> IB ESS
-        </p>
-
-        <p>
-            This equipment is part of the Vernier laboratory inventory.
-        </p>
-
-    `;
-
-    document.getElementById("modal").style.display = "flex";
+    noResults.style.display =
+        visible === 0 ? "block" : "none";
 
 }
 
+searchInput.addEventListener(
+    "input",
+    filterEquipment
+);
 
-function closeModal() {
+categoryFilter.addEventListener(
+    "change",
+    filterEquipment
+);
 
-    document.getElementById("modal").style.display = "none";
-
-}
-
-
-window.onclick = function(event) {
-
-    const modal =
-        document.getElementById("modal");
-
-    if (event.target === modal) {
-
-        closeModal();
-
-    }
-
-};
+subcategoryFilter.addEventListener(
+    "change",
+    filterEquipment
+);
 
 </script>
 
 </body>
+
 </html>
-</html>
+```
