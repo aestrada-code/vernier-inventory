@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vernier Inventory</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f7;
+    color: #24343a;
+}
+
+/* HEADER */
+
+header {
+    background: #173f46;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 38px;
+}
+
+header p {
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+/* MAIN */
+
+.container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px;
+}
+
+/* CONTROLS */
+
+.controls {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.controls input,
+.controls select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccd5d8;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+}
+
+.results {
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #52666c;
+}
+
+/* GRID */
+
+.inventory {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+/* CARD */
+
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 18px rgba(0,0,0,0.12);
+}
+
+.card-header {
+    background: #173f46;
+    color: white;
+    padding: 18px 20px;
+}
+
+.card-header h2 {
+    margin: 0;
+    font-size: 21px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* IMAGE */
+
+.image-description {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.device-image {
+    width: 190px;
+    height: 190px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+/* DESCRIPTION */
+
+.description {
+    margin: 0;
+    line-height: 1.55;
+    font-size: 15px;
+    color: #46575c;
+}
+
+/* INFORMATION */
+
+.info {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.info-box {
+    background: #f4f6f7;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.info-box strong {
+    display: block;
+    font-size: 12px;
+    color: #687b80;
+    margin-bottom: 4px;
+}
+
+.info-box span {
+    font-size: 14px;
+}
+
+/* LINKS */
+
+.links {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.links a,
+.disabled-link {
+    text-decoration: none;
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: 13px;
+}
+
+.links a {
+    background: #e7eff0;
+    color: #173f46;
+}
+
+.links a:hover {
+    background: #d5e3e5;
+}
+
+.disabled-link {
+    background: #f0f0f0;
+    color: #999;
+}
+
+/* NO RESULTS */
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 10px;
+    color: #66777c;
+}
+
+/* MOBILE */
+
+@media (max-width: 850px) {
+
+    .inventory {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .image-description {
+        flex-direction: column;
+    }
+
+    .device-image {
+        width: 100%;
+        height: 180px;
+    }
+
+    .info {
+        grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Vernier Inventory</h1>
+    <p>IB ESS Laboratory Equipment</p>
+</header>
+
+<div class="container">
+
+    <!-- FILTERS -->
+
+    <div class="controls">
+
+        <input
+            type="text"
+            id="search"
+            placeholder="Search equipment..."
+        >
+
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="IB ESS">IB ESS</option>
+        </select>
+
+        <select id="subcategoryFilter">
+            <option value="all">All Subcategories</option>
+            <option value="Atmospheric Sensors">Atmospheric Sensors</option>
+            <option value="Environmental Chambers">Environmental Chambers</option>
+            <option value="Gas Sensors">Gas Sensors</option>
+            <option value="Light & Physics">Light & Physics</option>
+            <option value="Soil">Soil</option>
+            <option value="Temperature">Temperature</option>
+            <option value="Water Quality">Water Quality</option>
+            <option value="Water Quality Accessories">Water Quality Accessories</option>
+        </select>
+
+    </div>
+
+    <div class="results" id="results">
+        Showing 15 of 15 equipment
+    </div>
+
+    <!-- INVENTORY -->
+
+    <div class="inventory" id="inventory">
+
+        <!-- 1 ANEMOMETER -->
+
+        <div class="card"
+             data-name="Anemometer"
+             data-category="IB ESS"
+             data-subcategory="Atmospheric Sensors">
+
+            <div class="card-header">
+                <h2>Anemometer</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        Use the Anemometer to measure wind speed in a variety of experiments. It can be used in dynamic environments or positioned in front of wind tunnels or fans.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>1</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/anemometer/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/anm-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=XoqcoRvkU5g" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 2 BAROMETER -->
+
+        <div class="card"
+             data-name="Barometer"
+             data-category="IB ESS"
+             data-subcategory="Atmospheric Sensors">
+
+            <div class="card-header">
+                <h2>Barometer</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Barometer can be used to measure and monitor atmospheric pressure. It works well for weather studies and experiments involving pressures close to normal atmospheric pressure.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>1</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/barometer/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/bar-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.vernier.com/experiment/esv-p4_barometric-pressure/" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 3 BIOCHAMBER -->
+
+        <div class="card"
+             data-name="BioChamber 250"
+             data-category="IB ESS"
+             data-subcategory="Environmental Chambers">
+
+            <div class="card-header">
+                <h2>BioChamber 250</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The BioChamber 250 is a 250 mL Nalgene bottle used with CO₂ and O₂ Gas Sensors to monitor gaseous carbon dioxide and oxygen levels simultaneously in a closed system.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>6</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/biochamber-250/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/search/?q=BioChamber+250&section=til" target="_blank">
+                        Manual
+                    </a>
+
+                    <span class="disabled-link">Not available</span>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 4 CO2 -->
+
+        <div class="card"
+             data-name="CO₂ Gas Sensor"
+             data-category="IB ESS"
+             data-subcategory="Gas Sensors">
+
+            <div class="card-header">
+                <h2>CO₂ Gas Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The CO₂ Gas Sensor measures gaseous carbon dioxide in two ranges: 0–10,000 ppm and 0–100,000 ppm.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>6</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/co2-gas-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/co2-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=pmsxa0-cKYU" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 5 DISSOLVED OXYGEN -->
+
+        <div class="card"
+             data-name="Dissolved Oxygen Probe"
+             data-category="IB ESS"
+             data-subcategory="Water Quality">
+
+            <div class="card-header">
+                <h2>Dissolved Oxygen Probe</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        Use the Dissolved Oxygen Probe to determine the concentration of oxygen in aqueous solutions in the field or in the laboratory.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>2</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/dissolved-oxygen-probe/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/do-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=wjTiRAHEHLc" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 6 FLOW RATE -->
+
+        <div class="card"
+             data-name="Flow Rate Meter"
+             data-category="IB ESS"
+             data-subcategory="Water Quality">
+
+            <div class="card-header">
+                <h2>Flow Rate Meter</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Flow Rate Sensor measures the velocity of water in studying the discharge, flow patterns, and sediment transport of a stream or river.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>2</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/flow-rate-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/flo-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://youtu.be/ORaVR9ZKKUI?si=NQScX21KB6I-JAgW" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 7 LIGHT SENSOR -->
+
+        <div class="card"
+             data-name="Light Sensor"
+             data-category="IB ESS"
+             data-subcategory="Light & Physics">
+
+            <div class="card-header">
+                <h2>Light Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <img
+                        class="device-image"
+                        src="https://www.vernier.com/wp-content/uploads/2020/08/LS-BTA.jpg"
+                        alt="Vernier Light Sensor"
+                        onerror="this.style.display='none';"
+                    >
+
+                    <p class="description">
+                        The Light Sensor approximates the human eye in spectral response. Use it for inverse square law experiments or for studying polarizers, reflectivity, or solar energy.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>5</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/light-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/ls-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.vernier.com/video/light-sensor-tech-tips/" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 8 O2 -->
+
+        <div class="card"
+             data-name="O₂ Gas Sensor"
+             data-category="IB ESS"
+             data-subcategory="Gas Sensors">
+
+            <div class="card-header">
+                <h2>O₂ Gas Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The O₂ Gas Sensor monitors gaseous oxygen levels in biology and chemistry experiments and is intended for measuring gaseous, not aqueous, O₂ concentration.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>6</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/o2-gas-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/o2-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://youtu.be/bhusKmCNbiY?si=0Ao-IMuzZJY682TC" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 9 OPTICAL DO REPLACEMENT CAP -->
+
+        <div class="card"
+             data-name="Optical DO Probe Replacement Cap"
+             data-category="IB ESS"
+             data-subcategory="Water Quality Accessories">
+
+            <div class="card-header">
+                <h2>Optical DO Probe Replacement Cap</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        Replacement cap for the Vernier Optical DO Probe.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>1</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <span class="disabled-link">Description not available</span>
+
+                    <span class="disabled-link">Manual not available</span>
+
+                    <span class="disabled-link">Video not available</span>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 10 RELATIVE HUMIDITY -->
+
+        <div class="card"
+             data-name="Relative Humidity Sensor"
+             data-category="IB ESS"
+             data-subcategory="Atmospheric Sensors">
+
+            <div class="card-header">
+                <h2>Relative Humidity Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Relative Humidity Sensor can be used for weather studies, monitoring greenhouses, or determining days when static electrical discharges could be a problem.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>4</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/relative-humidity-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/rh-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <span class="disabled-link">Not available</span>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 11 SALINITY -->
+
+        <div class="card"
+             data-name="Salinity Sensor"
+             data-category="IB ESS"
+             data-subcategory="Water Quality">
+
+            <div class="card-header">
+                <h2>Salinity Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Salinity Sensor precisely measures the total dissolved salt content of ocean, brackish, and other aqueous solutions.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>2</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/salinity-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <span class="disabled-link">Manual not available</span>
+
+                    <span class="disabled-link">Video not available</span>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 12 SOIL MOISTURE -->
+
+        <div class="card"
+             data-name="Soil Moisture Sensor"
+             data-category="IB ESS"
+             data-subcategory="Soil">
+
+            <div class="card-header">
+                <h2>Soil Moisture Sensor</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Soil Moisture Sensor is used to measure the volumetric water content of soil, making it ideal for soil science, environmental science, horticulture, botany, and biology.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>7</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/soil-moisture-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/product/soil-moisture-sensor/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://youtu.be/CBdlP1IMxLw?si=G7tp493ORe57M-e7" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 13 SURFACE TEMPERATURE -->
+
+        <div class="card"
+             data-name="Surface Temperature Probe"
+             data-category="IB ESS"
+             data-subcategory="Temperature">
+
+            <div class="card-header">
+                <h2>Surface Temperature Probe</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Surface Temperature Sensor is designed for situations in which low thermal mass or flexibility is required, or for skin temperature measurement.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>3</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/surface-temperature-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/sts-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=emGOPcyFY6k" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 14 TURBIDITY -->
+
+        <div class="card"
+             data-name="Turbidity Meter"
+             data-category="IB ESS"
+             data-subcategory="Water Quality">
+
+            <div class="card-header">
+                <h2>Turbidity Meter</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        Use the Turbidity Sensor to measure the turbidity of freshwater or seawater samples and determine water quality.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>2</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/turbidity-sensor/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/trb-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=Hi8OVqA--m8" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- 15 VERNIER OPTICAL DO -->
+
+        <div class="card"
+             data-name="Vernier Optical DO Probe"
+             data-category="IB ESS"
+             data-subcategory="Water Quality">
+
+            <div class="card-header">
+                <h2>Vernier Optical DO Probe</h2>
+            </div>
+
+            <div class="card-body">
+
+                <div class="image-description">
+
+                    <p class="description">
+                        The Vernier Optical DO Probe uses luminescent technology to provide fast, easy, and accurate results for measuring dissolved oxygen concentration in surface water.
+                    </p>
+
+                </div>
+
+                <div class="info">
+
+                    <div class="info-box">
+                        <strong>In Stock</strong>
+                        <span>2</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Category</strong>
+                        <span>IB ESS</span>
+                    </div>
+
+                    <div class="info-box">
+                        <strong>Location</strong>
+                        <span>HS305</span>
+                    </div>
+
+                </div>
+
+                <div class="links">
+
+                    <a href="https://www.vernier.com/product/vernier-optical-do-probe/" target="_blank">
+                        Description
+                    </a>
+
+                    <a href="https://www.vernier.com/manuals/odo-bta/" target="_blank">
+                        Manual
+                    </a>
+
+                    <a href="https://www.youtube.com/watch?v=zHHRmqWuTDo" target="_blank">
+                        Video
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="no-results" id="noResults">
+        No equipment found.
+    </div>
+
+</div>
+
+
+<script>
+
+const searchInput = document.getElementById("search");
+const categoryFilter = document.getElementById("categoryFilter");
+const subcategoryFilter = document.getElementById("subcategoryFilter");
+
+const cards = Array.from(document.querySelectorAll(".card"));
+
+const results = document.getElementById("results");
+const noResults = document.getElementById("noResults");
+
+
+function filterInventory() {
+
+    const searchText = searchInput.value.toLowerCase().trim();
+    const category = categoryFilter.value;
+    const subcategory = subcategoryFilter.value;
+
+    let visible = 0;
+
+    cards.forEach(card => {
+
+        const name =
+            card.dataset.name.toLowerCase();
+
+        const cardCategory =
+            card.dataset.category;
+
+        const cardSubcategory =
+            card.dataset.subcategory;
+
+        const matchesSearch =
+            name.includes(searchText);
+
+        const matchesCategory =
+            category === "all" ||
+            cardCategory === category;
+
+        const matchesSubcategory =
+            subcategory === "all" ||
+            cardSubcategory === subcategory;
+
+        if (
+            matchesSearch &&
+            matchesCategory &&
+            matchesSubcategory
+        ) {
+
+            card.style.display = "block";
+            visible++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    results.textContent =
+        `Showing ${visible} of ${cards.length} equipment`;
+
+    noResults.style.display =
+        visible === 0 ? "block" : "none";
+}
+
+
+searchInput.addEventListener(
+    "input",
+    filterInventory
+);
+
+categoryFilter.addEventListener(
+    "change",
+    filterInventory
+);
+
+subcategoryFilter.addEventListener(
+    "change",
+    filterInventory
+);
+
+</script>
+
+</body>
+</html>
