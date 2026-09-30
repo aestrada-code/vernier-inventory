@@ -2289,25 +2289,30 @@ function filterInventory() {
 
     cards.forEach(card => {
 
-        const name =
-            card.dataset.name.toLowerCase();
+        const name = card.dataset.name.toLowerCase();
 
-        const cardCategory =
-            card.dataset.category;
+        const categories = card.dataset.category
+            .toLowerCase()
+            .split("|")
+            .map(x => x.trim());
 
-        const cardSubcategory =
-            card.dataset.subcategory;
+        const subcategories = card.dataset.subcategory
+            .toLowerCase()
+            .split("|")
+            .map(x => x.trim());
 
         const matchesSearch =
-            name.includes(searchText);
+            name.includes(searchText) ||
+            categories.some(x => x.includes(searchText)) ||
+            subcategories.some(x => x.includes(searchText));
 
         const matchesCategory =
             category === "all" ||
-            cardCategory === category;
+            categories.includes(category.toLowerCase());
 
         const matchesSubcategory =
             subcategory === "all" ||
-            cardSubcategory === subcategory;
+            subcategories.includes(subcategory.toLowerCase());
 
         if (
             matchesSearch &&
@@ -2349,6 +2354,11 @@ subcategoryFilter.addEventListener(
     filterInventory
 );
 
+
+/* Mostrar el número correcto al cargar la página */
+
+filterInventory();
+   
 </script>
 
 </body>
