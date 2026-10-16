@@ -21,21 +21,43 @@ body {
 
 /* HEADER */
 
-header {
-    background: #173f46;
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
+header{
+  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  color:#fff;
+  padding:34px;
+  border-radius:24px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 18px 50px #0f172a22
 }
 
-header h1 {
-    margin: 0;
-    font-size: 38px;
+header:after{
+  content:"🧬  ⚗️  🔬";
+  position:absolute;
+  right:28px;
+  bottom:18px;
+  font-size:42px;
+  opacity:.22;
+  letter-spacing:14px
 }
 
-header p {
-    margin-top: 8px;
-    font-size: 18px;
+h1{
+  font-size:clamp(28px,4vw,52px);
+  margin:0 0 8px;
+  letter-spacing:-1.5px
+}
+
+.subtitle{
+  color:#dbeafe;
+  max-width:800px;
+  line-height:1.6
+}
+
+.toolbar{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:12px;
+  margin:22px 0
 }
 
 /* MAIN */
